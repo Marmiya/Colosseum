@@ -80,7 +80,10 @@ public class AirSim : ModuleRules
 
         bEnableExceptions = true;
 
-        PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "ImageWrapper", "RenderCore", "RHI", "PhysicsCore", "AssetRegistry", "ChaosVehicles", "Landscape", "CinematicCamera" });
+        PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "ImageWrapper", 
+            "RenderCore", "RHI", "PhysicsCore", "AssetRegistry", "ChaosVehicles", "Landscape", "CinematicCamera",
+            "NavigationSystem"
+        });
         PrivateDependencyModuleNames.AddRange(new string[] { "UMG", "Slate", "SlateCore", "RenderCore" });
 
         //suppress VC++ proprietary warnings
@@ -92,7 +95,7 @@ public class AirSim : ModuleRules
         PublicIncludePaths.Add(Path.Combine(AirLibPath, "deps", "eigen3"));
         AddOSLibDependencies(Target);
 
-        SetupCompileMode(CompileMode.CppCompileWithRpc, Target);
+        SetupCompileMode(CompileMode.HeaderOnlyWithRpc, Target);
     }
 
     private void AddOSLibDependencies(ReadOnlyTargetRules Target)
@@ -110,8 +113,9 @@ public class AirSim : ModuleRules
         if (Target.Platform == UnrealTargetPlatform.Linux)
         {
             // needed when packaging
-            PublicAdditionalLibraries.Add("stdc++");
-            PublicAdditionalLibraries.Add("supc++");
+            PublicAdditionalLibraries.Add("D:\\UE_5.4\\Engine\\Source\\ThirdParty\\Unix\\LibCxx\\lib\\Unix\\x86_64-unknown-linux-gnu\\libc++.a");
+            PublicAdditionalLibraries.Add("C:\\UnrealToolchains\\v22_clang-16.0.6-centos7\\x86_64-unknown-linux-gnu\\lib\\libsupc++.a");
+            PublicAdditionalLibraries.Add("C:\\UnrealToolchains\\v22_clang-16.0.6-centos7\\x86_64-unknown-linux-gnu\\lib\\libpthread-2.17.so");
         }
     }
 

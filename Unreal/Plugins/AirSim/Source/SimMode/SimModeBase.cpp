@@ -22,6 +22,8 @@
 
 #include "DrawDebugHelpers.h"
 
+#include "NavigationSystem.h"
+
 //TODO: this is going to cause circular references which is fine here but
 //in future we should consider moving SimMode not derived from AActor and move
 //it to AirLib and directly implement WorldSimApiBase interface
@@ -113,6 +115,12 @@ void ASimModeBase::BeginPlay()
     // Move the world origin to the player's location (this moves the coordinate system and adds
     // a corresponding offset to all positions to compensate for the shift)
     this->GetWorld()->SetNewWorldOrigin(FIntVector(player_loc) + this->GetWorld()->OriginLocation);
+
+    UNavigationSystemV1* NavSystem = FNavigationSystem::GetCurrent<UNavigationSystemV1>(GetWorld());
+    if (NavSystem) {
+        NavSystem->Build();
+    }
+
     // Regrab the player's position after the offset has been added (which should be 0,0,0 now)
     player_start_transform = fpv_pawn->GetActorTransform();
     global_ned_transform_.reset(new NedTransform(player_start_transform,
